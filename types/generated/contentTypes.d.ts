@@ -6,12 +6,14 @@ export interface ApiTestTest extends Struct.CollectionTypeSchema {
     singularName: 'test';
     pluralName: 'tests';
     displayName: 'test';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     test: Schema.Attribute.String;
+    desc: Schema.Attribute.RichText;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
