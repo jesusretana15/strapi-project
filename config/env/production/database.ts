@@ -1,24 +1,18 @@
-import { parse } from "pg-connection-string";
-import { Knex } from "knex";
-
-
-const { host, port, database, user, password } = parse(process.env.DATABASE_URL || "");
-
-export default (): { connection: Knex.Config } => ({
+// path: /config/env/production/database.ts
+export default ({ env }) => ({
   connection: {
-    client: "postgres",
-    connection: {
-      host,
-      port: port ? parseInt(port, 10) : undefined,
-      database,
-      user,
-      password,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
-    pool: { min: 2, max: 10 },
-    debug: false,
-  },
+ client: 'postgres',
+ connection: {
+   host: env('DATABASE_HOST', '127.0.0.1'),
+   port: env.int('DATABASE_PORT', 5432),
+   database: env('DATABASE_NAME', 'strapi'),
+   user: env('DATABASE_USERNAME', 'strapi'),
+   password: env('DATABASE_PASSWORD', 'strapi'),
+   schema: env('DATABASE_SCHEMA', 'public'), // Not required
+   ssl: {
+     rejectUnauthorized: env.bool('DATABASE_SSL_SELF', false), // For self-signed certificates
+   },
+ },
+ debug: false,
+},
 });
-
