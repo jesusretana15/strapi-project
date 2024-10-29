@@ -1,7 +1,7 @@
 import { parse } from "pg-connection-string";
 import { Knex } from "knex";
 
-// Parse the DATABASE_URL environment variable
+
 const { host, port, database, user, password } = parse(process.env.DATABASE_URL || "");
 
 export default (): { connection: Knex.Config } => ({

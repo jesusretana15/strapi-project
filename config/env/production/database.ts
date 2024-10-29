@@ -1,13 +1,15 @@
-const parse = require("pg-connection-string").parse;
-const { host, port, database, user, password } = parse(
-  process.env.DATABASE_URL
-);
-module.exports = ({ env }) => ({
-  connection: {  
-    client: 'postgres',
+import { parse } from "pg-connection-string";
+import { Knex } from "knex";
+
+
+const { host, port, database, user, password } = parse(process.env.DATABASE_URL || "");
+
+export default (): { connection: Knex.Config } => ({
+  connection: {
+    client: "postgres",
     connection: {
       host,
-      port,
+      port: port ? parseInt(port, 10) : undefined,
       database,
       user,
       password,
@@ -15,6 +17,8 @@ module.exports = ({ env }) => ({
         rejectUnauthorized: false,
       },
     },
-      debug: false,
+    pool: { min: 2, max: 10 },
+    debug: false,
   },
 });
+
